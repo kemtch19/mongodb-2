@@ -354,6 +354,96 @@ db.practicaUpdate.insertOne({
     peso: 70
 });
 
+//documento 26
+db.practicaUpdate.insertOne({
+    nombre: "Fernando",
+    apellido: "Deltoro",
+    ciudad: "New York",
+    pais: "Estados Unidos",
+    salario: 5001,
+    edad: 16,
+    altura: 122,
+    peso: 70
+});
+
+//documento 27
+db.practicaUpdate.insertOne({
+    nombre: "Danilo",
+    apellido: "Campusano",
+    ciudad: "Filipinas",
+    pais: "Europa",
+    correo: "lu@spam.com",
+    salario: 5001,
+    edad: 16,
+    altura: 122,
+    peso: 70
+});
+
+//documento 28
+db.practicaUpdate.insertOne({
+    nombre: "Edilma",
+    apellido: "Socorro",
+    correo: "edi@example.com",
+    ciudad: "Bello",
+    pais: "Colombia",
+    salario: 24000,
+    edad: 62,
+    altura: 180,
+    peso: 75
+});
+
+//documento 29
+db.practicaUpdate.insertOne({
+    nombre: "juan",
+    apellido: "Gónzales",
+    correo: "juan@example.com",
+    ciudad: "Bello",
+    pais: "Colombia",
+    salario: 2000,
+    edad: 32,
+    altura: 181,
+    peso: 59
+});
+
+//documento 30
+db.practicaUpdate.insertOne({
+    nombre: "Camilo",
+    apellido: "Mujica",
+    correo: "muji@example.com",
+    ciudad: "shangai",
+    pais: "pekin",
+    salario: 2000,
+    edad: 71,
+    altura: 181,
+    peso: 59
+});
+
+//documento 30
+db.practicaUpdate.insertOne({
+    nombre: "Maicol",
+    apellido: "Agudelo",
+    correo: "kemtch@example.com",
+    ciudad: "Masachuscets",
+    pais: "Canadá",
+    salario: 2000,
+    edad: 71,
+    altura: 181,
+    peso: 59
+});
+
+//documento 30
+db.practicaUpdate.insertOne({
+    nombre: "Chanchito",
+    apellido: "Feliz",
+    correo: "Chanchito.feliz@example.com",
+    ciudad: "Colorado",
+    pais: "Estados Unidos",
+    salario: 32000,
+    edad: 71,
+    altura: 200,
+    peso: 59
+});
+
 //Operaciones de eliminacion
 
 //1. Eliminar todos los usuarios que tienen un salario menor que 2000 dólares.
@@ -361,6 +451,7 @@ db.practicaUpdate.insertOne({
 db.practicaUpdate.deleteMany({
     salario:{$lt:2000}
 });
+
 
 //2. Eliminar usuarios que tienen una edad menor que 25 años.
 
@@ -423,4 +514,79 @@ db.practicaUpdate.deleteMany({
 
 db.practicaUpdate.deleteMany({
     salario:{$eq:0}
+});
+
+//12. Borrar usuarios que viven en "New York" y tienen un salario superior a 5000 dólares.
+
+db.practicaUpdate.deleteMany({
+    $and:[
+        {ciudad:{$eq:"New York"}},
+        {salario:{$gt:5000}}
+    ]
+});
+
+//Estar pendiente a preguntar al profesor porque no me funciona
+//13. Eliminar usuarios que tienen una dirección de correo electrónico que contiene la palabra "spam".
+
+db.practicaUpdate.find({
+    correo:{$regex: /spam/i }
+});
+
+//14. Borrar usuarios que viven en "Bello" y tienen más de 50 años.
+
+db.practicaUpdate.deleteMany({
+    $and:[
+        {ciudad:{$eq:"Bello"}},
+        {edad:{$gt:50}}
+    ]
+});
+
+//15. Eliminar todos los usuarios que tienen el apellido "González".
+
+db.practicaUpdate.deleteMany({
+    apellido:{$eq: "Gónzales"}
+});
+
+//16. Borrar usuarios que tienen una edad superior a 70 años.
+
+db.practicaUpdate.deleteMany({
+    edad:{$gt:70}
+});
+
+//17. Eliminar usuarios que tienen un país de residencia igual a "Canadá" y un salario inferior a 4000 dólares.
+
+db.practicaUpdate.deleteMany({
+    $and:[
+        {pais:{$eq:"Canadá"}},
+        {salario:{$lt:4000}}
+    ]
+});
+
+//se practica utilizando syntaxis de javascript para hacer un experimento
+//18. Borrar usuarios que tienen un salario entre 1000 y 2000 dólares.
+
+let array=[1000,2000];
+
+db.practicaUpdate.deleteMany({
+    salario:{$in:array}
+});
+
+//19. Eliminar usuarios que tienen una edad igual a 30 años.
+
+db.practicaUpdate.deleteMany({
+    edad:{$eq:30}
+});
+
+//20. Borrar usuarios que tienen una altura superior a 190 centímetros.
+
+db.practicaUpdate.deleteMany({
+    altura:{$gt:190}
+});
+
+//practica para tomar el rango de salario entre 0 y 5002
+db.practicaUpdate.find({
+    $and:[
+        {salario:{$gte:0}},
+        {salario:{$lte:5002}}
+    ]
 });
