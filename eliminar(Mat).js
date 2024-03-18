@@ -590,3 +590,192 @@ db.practicaUpdate.find({
         {salario:{$lte:5002}}
     ]
 });
+
+//con el método .sort() nos ayuda a organizar la información con :1 es los números menores y con :-1 los números desde el mas alto hasta el mas bajo
+//el metodo .limit() nos ayuda a que nos limite el número de documentos que nos va a devolver por ejemplo de esa consulta del find devuelvame los primeros 3 resultados y organizemelos de menor a mayor, pretty es para que se muestre de manera mas organizada
+db.practicaUpdate.find({
+    pais:"Colombia"
+}).sort({
+    edad:1
+}).limit(3).pretty()
+
+//combinamos la tecnología de base de datos Mongo con javascript
+var consulta=db.practicaUpdate.find().forEach(user=>print(user.nombre+" "+user.apellido));
+
+consulta;
+
+//debemos de recordar que mongo es un lazy iterator lo que quiere decir es que nos va a devolver los elementos conforme los vayamos necesitando ya que si pedimos 1000 documentos nos va a devolver 20 y luego otros 20 y así para que no ocupe toda la memoria ram ahi el argumento de que sea flexible y rápido para grandes volumenes de datos
+
+//proyecciones: son aquellas formas en las que podemos obtener los documentos de manera muy precisa, es decir, quiero que me muestre solamente el nombre y la edad de todos los 100 documentos que tengo, porque si nosotros realizamos las consultas lo que nos devolveran las condiciones que les pasemos serán todos los campos nombre, apellido, edad, altura, ciudad, etc. pero para eso están las proyecciones
+
+//en cuanto a las consultas con find recordemos que el primer argumento {} definimos las condiciones que nos va a devolver la consulta si lo dejamos solo cojera todos los documentos sin una condición en especifico, pero el segundo argumento {} donde definiremos los atributos a mostrar por pantalla todo esto mediante true o false de si queremos que se muestre o false que no queremos que se muestre por pantalla
+db.practicaUpdate.find(
+    {
+        edad:{$gte:50}
+    },
+    {
+        _id:false,
+        nombre:true,
+        edad:true       
+    }
+);
+
+//para actualizar utilizamos el método .update() el cuál se le pasan dos paramétros, el primero es el para abarcar todos los datos o la condición que deben de pasar primero para poder luego el segundo parámetro que le pasemos pueda cambiarse con el set que es la palabra reservada para modificar 
+
+//hay que estar muy pendientes de la integridad de los datos porque cree un campo llamado name con el atributo camilo en vez de cambiar el campo nombre por el atributo camilo
+
+//hay que recordar que el método update solamente actualiza un solo documento ya si queremos actualizar varios debemos de utilizar un 3 argumento. El cual llamamos multi:true, es decir, aceptame multiples documentos que cumplan la condición, pero se pueden reemplazar updateMany o updateOne
+
+db.practicaUpdate.update(
+    {
+        _id: ObjectId("65f4c52a88ba14e583a1a478")
+    },
+    {
+        $set:{ //establecer
+            nombre:"camilo"
+        }
+    },
+    {
+        multi:true
+    }
+);
+
+//Buscamos el ID
+db.practicaUpdate.findOne({
+    _id: ObjectId("65f4c52a88ba14e583a1a478")
+});
+
+//para poder quitar un valor que nosotros no querramos tenemos la palabra reservada $unset para quitar ese valor del documento
+
+db.practicaUpdate.update(
+    {
+        _id: ObjectId("65f4c52a88ba14e583a1a478")
+    },
+    {
+        $unset:{ //quitar
+            name:true
+        }
+    }
+);
+
+db.practicaUpdate.updateOne(
+    {
+        nombre:"camilo"
+    },
+    {
+        $set:{
+            estado:"activo"
+        }
+    }
+);
+
+db.practicaUpdate.find({
+    nombre:"camilo"
+})
+
+//para poder insertar varios documentos de un solo debemos de utilizar una lista de documentos que se crea con [] y dentro de este los documentos seguidos con , con las llaves {}
+db.practicaUpdate.insertMany(
+    [{
+        nombre:"Yan",
+        apellido:"Agudelo",
+        edad:20,
+        altura:32
+    },
+    {
+        nombre:"Patricia",
+        apellido:"Rojas",
+        edad:44,
+        altura:160
+    }]
+);
+
+//para incrementar valores cambiamos la palabra reservada $set por $inc o también le podemos quitar 2 edad:-2
+db.practicaUpdate.updateMany(
+    {},
+    {
+        $inc:{
+            edad:1
+        }
+    }
+);
+
+// Nosotros también podemos eliminar mediante el método remove, con este así borra todos los documentos
+// db.practicaUpdate.remove({})
+
+//También tenemos el comando show collections; para ver todas las colecciones (las tablas), para poder verlas todas, db (la base de datos en la que esta parado), db.user.drop()->este nos permite borrar la colección de los datos llamada user, para eliminar la base de datos colocamos db.dropDatabase() ; show databases;
+
+//también tenemos el dot notation el cual nos ayuda a llegar a un documento en especifico si tenemos varios documentos envebidos dentro de otro direccion.localicacion.latencia:
+
+db.practicaUpdate.find(
+    {
+        apellido:"Hernández"
+    }
+)
+
+//con el elemento $elemMatch nos ayudara a buscar sobre documentos {} que esten dentro de un listado []
+
+db.practicaUpdate.find(
+    {
+        direccion:{
+            $elemMatch:{
+                latitud:240
+            }
+        }
+    }
+);
+
+//si nosotros queremos añadir un nuevo elemento al final de una lista debemos de poner el elemento $push 
+db.practicaUpdate.updateOne(
+    {
+        nombre:"Maicol",
+        latitud:{$exists:true},
+        longitud:{$exists:true}
+    },
+    {
+        $push:{
+            direccion:{
+                latitud:125,
+                longitud:321
+            }
+        }
+    }
+);
+
+//si nosotros queremos añadir un valor en especifico a una lista dentro de un array utilizamos la notación dot notation y en base a eso le indicamos la posición después de la que queremos agregar sobre la lista que tenemos [] 0,1,2,3, etc. por ejemplo
+
+db.user.updateOne(
+    {
+        nombre:"Daniel"
+    },
+    {
+        $push:{
+            "comments.3.tags": "Tutor"
+        }
+    }
+);
+
+//hay que tener en cuenta que si vamos a modificar algo con una condición y no sabemos exactamente el índice de la lista lo hacemos con el comodín de $
+
+db.practicaUpdate.updateOne(
+    {
+        nombre:"camilo",
+        edad:32
+    },
+    {
+        $set:{
+            edad:44
+        }
+    }
+);
+
+db.user.updateOne(
+    {
+        nombre:"Daniel",
+        'comments.like':false
+    },
+    {
+        $push:{
+            "comments.$.tags": "Tutor"
+        }
+    }
+);
