@@ -1,4 +1,4 @@
-# Practica Eliminar y Actualizar Documentos 
+# Practica Eliminar y Actualizar Documentos ![icono de mongo](mongo.ico)
 En el siguiente repositorio se encontraran todos los ejercicios propuestos por el profesor, para la mejor absorción del conocimiento y la mayor agilidad de la syntaxis para los métodos de deleteMany, deleteOne -> para eliminar y updateOne, updateMany -> para actualizar
 acá encontraremos 20 ejercicios de cada método todo con el fin de practicar y practicar para afianzar los conocimientos vistos en clase y llegar a un mayor entendimiento de los conceptos. Fue importante la documentación debido a que se utilizan métodos muy importantes 
 de los cuales no se tenía conocimiento se dejan algunos recursos para su posterior estudio, muchas gracias a mis compañeros por resolverme muchas de las dudas y al profe por inspirarme.
